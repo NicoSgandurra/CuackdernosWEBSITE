@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuackdernos - Diseña tu Cuaderno</title>
+
+    <!-- Script para evitar el parpadeo blanco al cargar en modo oscuro -->
+    <script>
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+
+    <!-- Fuentes Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Space+Mono:ital@0;1&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class', // Habilita el modo oscuro basado en clases
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Quicksand', 'sans-serif'],
+                        mono: ['Space Mono', 'monospace'],
+                    },
+                    colors: {
+                        dark: {
+                            bg: '#1a1a24',
+                            card: '#232332',
+                            border: '#333344',
+                            accent: '#bfaee3', // Morado pastel nocturno
+                            accentHover: '#a892d6'
+                        }
+                    },
+                    boxShadow: {
+                        'soft': '0 10px 40px -10px rgba(253, 226, 228, 0.8)',
+                        'soft-dark': '0 10px 40px -10px rgba(0, 0, 0, 0.5)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Fondos con patrón de puntos (Claro y Oscuro) */
+        body {
+            background-color: #FFF5F7;
+            background-image: radial-gradient(#FDE2E4 1px, transparent 1px);
+            background-size: 20px 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .dark body {
+            background-color: #1a1a24;
+            background-image: radial-gradient(#2a2a3a 1px, transparent 1px);
+        }
+
+        /* Scrollbar adaptativo */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #FDE2E4;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ffb3ba;
+        }
+
+        .dark ::-webkit-scrollbar-thumb {
+            background: #333344;
+        }
+
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #bfaee3;
+        }
+
+        .transition-all {
+            transition-property: all;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 300ms;
+        }
+
+        /* Cuaderno Visual */
+        .notebook-page {
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.02), 5px 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .dark .notebook-page {
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2), 5px 5px 15px rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Discos interactivos */
+        .disc {
+            transition: all 0.2s ease;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.15), inset -2px -2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .disc:hover {
+            transform: scale(1.1);
+            z-index: 30;
+        }
+
+        /* Borde de selección de disco (Claro: Rosa, Oscuro: Morado) */
+        .disc.selected {
+            box-shadow: 0 0 0 3px white, 0 0 0 6px #ff9a9e;
+            transform: scale(1.15);
+            z-index: 40;
+        }
+
+        .dark .disc.selected {
+            box-shadow: 0 0 0 3px #232332, 0 0 0 6px #bfaee3;
+        }
+
+        .option-btn {
+            transition: all 0.2s;
+        }
+
+        .color-swatch {
+            transition: transform 0.2s;
+        }
+
+        .color-swatch:hover {
+            transform: scale(1.15);
+        }
+
+        /* Ocultar input color nativo */
+        input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        input[type="color"]::-webkit-color-swatch {
+            border: none;
+        }
+    </style>
+</head>
+
+<body class="text-gray-700 dark:text-gray-200 min-h-screen p-4 md:p-8 flex flex-col items-center pt-16 md:pt-8">
+
+    <!-- Botón Modo Oscuro Fijo en la esquina -->
+    <button id="theme-toggle" type="button"
+        class="fixed top-4 right-4 md:top-6 md:right-6 z-50 text-gray-500 dark:text-gray-400 hover:text-rose-500 dark:hover:text-dark-accent hover:bg-gray-50 dark:hover:bg-gray-800 rounded-full text-sm p-3 transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-1 bg-white dark:bg-dark-card border border-gray-100 dark:border-dark-border">
+        <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+        </svg>
+        <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                fill-rule="evenodd" clip-rule="evenodd"></path>
+        </svg>
+    </button>
+
+    <header class="text-center mb-8 max-w-2xl w-full">
+        <!-- Logo de la empresa (Más pequeño y con animación sutil) -->
+        <img src="assets/Logo cuackdernos.png" alt="Cuackdernos Logo"
+            class="w-48 md:w-56 h-auto mx-auto mb-4 drop-shadow-sm dark:drop-shadow-[0_0_15px_rgba(191,174,227,0.15)] object-contain transition-all duration-500 ease-out hover:scale-105 hover:-translate-y-1 hover:drop-shadow-lg dark:hover:drop-shadow-[0_0_20px_rgba(191,174,227,0.3)]">
+
+        <p class="text-gray-500 dark:text-gray-400 text-lg">Personaliza el tamaño, los discos y el interior para crear
+            el cuaderno de tus sueños. ✨</p>
+    </header>
+
+    <main class="w-full max-w-7xl flex flex-col lg:flex-row gap-8 items-start">
+
+        <!-- COLUMNA IZQUIERDA: CONTROLES -->
+        <section
+            class="w-full lg:w-[55%] bg-white dark:bg-dark-card rounded-[3rem] p-6 md:p-8 shadow-soft dark:shadow-soft-dark border border-transparent dark:border-dark-border flex flex-col gap-8 order-1 lg:order-none">
+
+            <!-- 1. Tamaño -->
+            <div>
+                <h3 class="text-lg font-bold text-gray-700 dark:text-gray-200 mb-3 flex items-center gap-2">
+                    <span
+                        class="bg-rose-100 dark:bg-dark-accent/20 text-rose-500 dark:text-dark-accent rounded-full w-8 h-8 flex items-center justify-center">1</span>
+                    Elige el Tamaño
+                </h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3" id="size-options"></div>
+            </div>
+
+            <!-- 2. Posición de Discos -->
+            <div>
+                <h3 class="text-lg font-bold text-gray-700 dark:text-gray-200 mb-3 flex items-center gap-2">
+                    <span
+                        class="bg-rose-100 dark:bg-dark-accent/20 text-rose-500 dark:text-dark-accent rounded-full w-8 h-8 flex items-center justify-center">2</span>
+                    Posición de Sujeción
+                </h3>
+                <div class="flex gap-3" id="position-options">
+                    <button class="option-btn flex-1 py-3 px-4 rounded-2xl border-2 text-center cursor-pointer"
+                        onclick="setDiscPosition('left')" id="btn-pos-left">
+                        Lado Izquierdo
+                    </button>
+                    <button class="option-btn flex-1 py-3 px-4 rounded-2xl border-2 text-center cursor-pointer"
+                        onclick="setDiscPosition('top')" id="btn-pos-top">
+                        Lado Superior
+                    </button>
+                </div>
+            </div>
+
+            <!-- 3. Tamaño de Discos -->
+            <div>
+                <h3 class="text-lg font-bold text-gray-700 dark:text-gray-200 mb-3 flex items-center gap-2">
+                    <span
+                        class="bg-rose-100 dark:bg-dark-accent/20 text-rose-500 dark:text-dark-accent rounded-full w-8 h-8 flex items-center justify-center">3</span>
+                    Tamaño de Discos
+                </h3>
+                <div class="flex flex-col sm:flex-row gap-3" id="disc-size-options">
+                    <button
+                        class="option-btn flex-1 py-3 px-4 rounded-2xl border-2 text-center cursor-pointer flex flex-col items-center justify-center"
+                        onclick="setDiscSize('normal')" id="btn-disc-normal">
+                        <span>Normales (24mm)</span>
+                        <span class="text-xs opacity-80 mt-1 font-normal">Hasta 130 hojas (75gr)</span>
+                    </button>
+                    <button
+                        class="option-btn flex-1 py-3 px-4 rounded-2xl border-2 text-center cursor-pointer flex flex-col items-center justify-center"
+                        onclick="setDiscSize('grande')" id="btn-disc-grande">
+                        <span>Grandes (32mm) <span class="text-xs">+ $1500</span></span>
+                        <span class="text-xs opacity-80 mt-1 font-normal">Hasta 200 hojas (75gr)</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 4. Tipo de Interior y Hojas -->
+            <div class="bg-gray-50 dark:bg-[#1f1f2e] p-5 rounded-3xl border border-gray-100 dark:border-dark-border">
+                <h3 class="text-lg font-bold text-gray-700 dark:text-gray-200 mb-4 flex items-center gap-2">
+                    <span
+                        class="bg-rose-100 dark:bg-dark-accent/20 text-rose-500 dark:text-dark-accent rounded-full w-8 h-8 flex items-center justify-center">4</span>
+                    Configuración Interior
+                </h3>
+
+                <div class="mb-4">
+                    <p class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2">Contenido principal:</p>
+                    <div class="flex flex-wrap gap-2" id="type-options"></div>
+                </div>
+
+                <div>
+                    <p class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2">Tipo de hojas
+                        (Apuntes/Adicionales):</p>
+                    <div class="flex flex-wrap gap-2" id="sheet-options"></div>
+                </div>
+            </div>
+
+            <!-- 5. Diseño de Portada (Temas) -->
+            <div>
+                <h3 class="text-lg font-bold text-gray-700 dark:text-gray-200 mb-3 flex items-center gap-2">
+                    <span
+                        class="bg-rose-100 dark:bg-dark-accent/20 text-rose-500 dark:text-dark-accent rounded-full w-8 h-8 flex items-center justify-center">5</span>
+                    Tema de Portada
+                </h3>
+
+                <div class="grid grid-cols-3 sm:grid-cols-4 gap-3 mb-4" id="theme-options"></div>
+
+                <div id="solid-color-selector"
+                    class="hidden animate-fade-in bg-pink-50/50 dark:bg-dark-accent/10 p-4 rounded-2xl border border-pink-100 dark:border-dark-accent/20">
+                    <p class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-3">Elige tu color preferido:</p>
+                    <div class="flex flex-wrap gap-3 items-center" id="cover-colors"></div>
+                </div>
+            </div>
+
+            <!-- 6. Colores de Discos -->
+            <div
+                class="bg-gray-50 dark:bg-[#1f1f2e] p-6 rounded-3xl border border-gray-100 dark:border-dark-border relative">
+                <h3 class="text-lg font-bold text-gray-700 dark:text-gray-200 mb-2 flex items-center gap-2">
+                    <span
+                        class="bg-rose-100 dark:bg-dark-accent/20 text-rose-500 dark:text-dark-accent rounded-full w-8 h-8 flex items-center justify-center">6</span>
+                    Paleta de Discos
+                </h3>
+
+                <div class="mb-4">
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-2 font-medium" id="color-instruction">
+                        Aplicar color a <strong>Todos los discos</strong>:
+                    </p>
+                    <div class="flex flex-wrap gap-3" id="disc-colors"></div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <button onclick="selectAllDiscs()"
+                        class="text-sm bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-border px-4 py-2 rounded-xl hover:bg-gray-100 dark:hover:bg-[#2a2a3a] transition shadow-sm font-semibold text-rose-400 dark:text-dark-accent">
+                        Volver a seleccionar todos
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- COLUMNA DERECHA: VISUALIZADOR Y CHECKOUT -->
+        <section class="w-full lg:w-[45%] flex flex-col gap-6 lg:sticky lg:top-8 order-2 lg:order-none">
+
+            <!-- Vista Previa del Cuaderno -->
+            <div
+                class="bg-white dark:bg-dark-card rounded-[3rem] p-6 shadow-soft dark:shadow-soft-dark border border-transparent dark:border-dark-border flex flex-col items-center justify-center">
+
+                <!-- Botones Girar -->
+                <div
+                    class="flex gap-2 bg-gray-100 dark:bg-[#1f1f2e] p-1 rounded-full mb-8 z-20 shadow-inner dark:shadow-none border dark:border-dark-border">
+                    <button onclick="setView('front')" id="btn-view-front"
+                        class="px-5 py-2 rounded-full font-bold text-sm transition-all">Portada</button>
+                    <button onclick="setView('back')" id="btn-view-back"
+                        class="px-5 py-2 rounded-full font-bold text-sm transition-all">Contraportada</button>
+                </div>
+
+                <div class="relative flex justify-center items-center w-full min-h-[480px]">
+                    <div id="notebook-wrapper" class="relative">
+                        <div id="discs-container" class="absolute flex justify-evenly z-10"></div>
+                        <div id="notebook-cover"
+                            class="notebook-page w-full relative overflow-hidden flex items-center justify-center bg-center bg-cover bg-no-repeat border border-black/5 dark:border-white/5">
+                        </div>
+                    </div>
+                </div>
+
+                <p class="text-sm text-gray-400 dark:text-gray-500 mt-8 text-center italic px-4">
+                    * Toca un disco específico para cambiar su color individualmente.
+                </p>
+            </div>
+
+            <!-- Total y Botón -->
+            <div
+                class="bg-white dark:bg-dark-card rounded-[3rem] p-6 md:p-8 shadow-soft dark:shadow-soft-dark border border-transparent dark:border-dark-border flex flex-col items-center text-center gap-4">
+                <p class="text-gray-400 dark:text-gray-500 text-sm font-bold uppercase tracking-wide">Costo Estimado</p>
+                <p class="text-5xl font-bold text-rose-500 dark:text-dark-accent mb-2 transition-colors"
+                    id="total-price">$0</p>
+
+                <button onclick="sendWhatsApp()"
+                    class="w-full bg-rose-400 hover:bg-rose-500 dark:bg-dark-accent dark:hover:bg-dark-accentHover text-white dark:text-dark-bg font-bold py-4 px-8 rounded-2xl shadow-lg shadow-rose-200 dark:shadow-dark-accent/20 transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2 text-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="currentColor">
+                        <path
+                            d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.347-.272.297-1.04 1.016-1.04 2.479 0 1.463 1.065 2.876 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
+                    </svg>
+                    Encargar mi cuaderno
+                </button>
+            </div>
+
+        </section>
+    </main>
+
+    <script>
+        /**
+         * 1. CONFIGURACIÓN Y BASE DE DATOS
+         */
+        const CONFIG = {
+            whatsappNumber: "549000000000", // REEMPLAZAR CON TU NÚMERO
+
+            sizes: {
+                'A4': { name: 'A4 (Grande)', basePrice: 15000, height: 420, width: 297, discs: { left: 11, top: 8 } },
+                'A5': { name: 'A5 (Mediano)', basePrice: 10000, height: 350, width: 240, discs: { left: 8, top: 6 } },
+                'A6': { name: 'A6 (Pequeño)', basePrice: 7500, height: 260, width: 180, discs: { left: 6, top: 4 } },
+                'Ficha': { name: 'Ficha N3', basePrice: 5000, height: 180, width: 260, discs: { left: 4, top: 6 } }
+            },
+
+            types: {
+                'notas': { name: 'Notas Clásico', extra: 0, availableIn: ['A4', 'A5', 'A6', 'Ficha'] },
+                'planner': { name: 'Planner Perpetuo', extra: 3000, availableIn: ['A5'] },
+                'enfermeria': { name: 'Libreta Enfermería', extra: 2000, availableIn: ['A6'] }
+            },
+
+            sheetTypes: {
+                'rayadas': { name: 'Rayadas' },
+                'lisas': { name: 'Lisas' },
+                'cuadros': { name: 'Cuadriculadas' },
+                'dots': { name: 'Punteadas (Dots)' }
+            },
+
+            themes: {
+                'gatito': {
+                    name: 'Gatito Cute',
+                    type: 'image',
+                    thumbUrl: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=150&q=80',
+                    frontUrl: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=600&q=80',
+                    backColor: '#F5ECE4',
+                    backUrl: ''
+                },
+                'flores': {
+                    name: 'Flores',
+                    type: 'image',
+                    thumbUrl: 'https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=150&q=80',
+                    frontUrl: 'https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=600&q=80',
+                    backColor: '#E6F0E9',
+                    backUrl: ''
+                },
+                'solido': {
+                    name: 'Sólido',
+                    type: 'color',
+                    thumbUrl: ''
+                }
+            },
+
+            discSizes: {
+                'normal': { name: 'Normal (24mm)', extra: 0 },
+                'grande': { name: 'Grande (32mm)', extra: 1500 }
+            },
+
+            discColors: [
+                { id: 'rosa', hex: '#FF9A9E', name: 'Rosa Pastel' },
+                { id: 'menta', hex: '#B5EAD7', name: 'Menta' },
+                { id: 'lila', hex: '#C7CEEA', name: 'Lila' },
+                { id: 'celeste', hex: '#A2C2E6', name: 'Celeste' },
+                { id: 'amarillo', hex: '#FFF5BA', name: 'Amarillo' },
+                { id: 'blanco', hex: '#FFFFFF', name: 'Blanco' },
+                { id: 'transparente', hex: '#E8E8E8', name: 'Transparente' },
+                { id: 'negro', hex: '#333333', name: 'Negro' }
+            ],
+
+            coverColors: [
+                { hex: '#FDE2E4', name: 'Rosa' },
+                { hex: '#E2ECE9', name: 'Gris Azulado' },
+                { hex: '#EAD4FA', name: 'Lila' },
+                { hex: '#FDF2B6', name: 'Amarillo' },
+                { hex: '#D1F2EB', name: 'Menta' },
+                { hex: '#FFDAC1', name: 'Durazno' }
+            ]
+        };
+
+        /**
+         * 2. ESTADO
+         */
+        let state = {
+            size: 'A5',
+            type: 'notas',
+            sheetType: 'rayadas',
+            discPosition: 'left',
+            discSize: 'normal',
+            theme: 'gatito',
+            customColor: '#FDE2E4',
+            discColors: [],
+            selectedDiscIndex: null,
+            view: 'front'
+        };
+
+        /**
+         * Helper para estilos dinámicos de botones según modo oscuro
+         */
+        const getBtnClasses = (isActive) => {
+            return isActive
+                ? 'option-btn border-2 rounded-2xl cursor-pointer text-center bg-rose-400 dark:bg-dark-accent text-white dark:text-dark-bg border-rose-400 dark:border-dark-accent font-bold shadow-md'
+                : 'option-btn border-2 rounded-2xl cursor-pointer text-center bg-white dark:bg-[#232332] text-gray-600 dark:text-gray-300 border-gray-200 dark:border-[#333344] hover:bg-gray-50 dark:hover:bg-[#2a2a3a] font-medium';
+        };
+
+        const getPillClasses = (isActive) => {
+            return isActive
+                ? 'option-btn py-2 px-4 rounded-full border-2 text-sm bg-rose-400 dark:bg-dark-accent text-white dark:text-dark-bg border-rose-400 dark:border-dark-accent shadow-sm font-semibold'
+                : 'option-btn py-2 px-4 rounded-full border-2 text-sm bg-white dark:bg-[#232332] text-gray-600 dark:text-gray-300 border-gray-200 dark:border-[#333344] hover:bg-gray-50 dark:hover:bg-[#2a2a3a]';
+        }
+
+        /**
+         * 3. INICIALIZACIÓN
+         */
+        function init() {
+            setupDarkMode();
+            syncDiscCount();
+
+            renderSizeOptions();
+            renderTypeOptions();
+            renderSheetOptions();
+            renderThemeOptions();
+            renderCoverColors();
+            renderDiscColorPalette();
+            updateStaticButtons(); // Botones de posición y tamaño
+            updateViewButtons(); // Botones front/back
+
+            updatePreview();
+            updatePrice();
+        }
+
+        /**
+         * Lógica de Modo Oscuro
+         */
+        function setupDarkMode() {
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const darkIcon = document.getElementById('theme-toggle-dark-icon');
+            const lightIcon = document.getElementById('theme-toggle-light-icon');
+
+            // Set initial icon
+            if (document.documentElement.classList.contains('dark')) {
+                lightIcon.classList.remove('hidden');
+            } else {
+                darkIcon.classList.remove('hidden');
+            }
+
+            themeToggleBtn.addEventListener('click', function () {
+                darkIcon.classList.toggle('hidden');
+                lightIcon.classList.toggle('hidden');
+
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                }
+            });
+        }
+
+        function syncDiscCount() {
+            const count = CONFIG.sizes[state.size].discs[state.discPosition];
+            const oldColors = [...state.discColors];
+            const defaultColor = CONFIG.discColors[0].hex;
+
+            state.discColors = Array(count).fill(defaultColor);
+
+            for (let i = 0; i < Math.min(oldColors.length, count); i++) {
+                state.discColors[i] = oldColors[i];
+            }
+        }
+
+        /**
+         * 4. RENDERIZADO DE MENÚS
+         */
+        function renderSizeOptions() {
+            const container = document.getElementById('size-options');
+            container.innerHTML = '';
+            for (const [key, data] of Object.entries(CONFIG.sizes)) {
+                const btn = document.createElement('button');
+                btn.className = `${getBtnClasses(state.size === key)} py-3 px-2 text-sm md:text-base`;
+                btn.innerText = data.name;
+                btn.onclick = () => setSize(key);
+                container.appendChild(btn);
+            }
+        }
+
+        function renderTypeOptions() {
+            const container = document.getElementById('type-options');
+            container.innerHTML = '';
+            for (const [key, data] of Object.entries(CONFIG.types)) {
+                if (data.availableIn.includes(state.size)) {
+                    const btn = document.createElement('button');
+                    btn.className = getPillClasses(state.type === key);
+                    btn.innerHTML = `${data.name} ${data.extra > 0 ? `<span class="opacity-70 text-xs">(+$${data.extra})</span>` : ''}`;
+                    btn.onclick = () => setType(key);
+                    container.appendChild(btn);
+                }
+            }
+        }
+
+        function renderSheetOptions() {
+            const container = document.getElementById('sheet-options');
+            container.innerHTML = '';
+            for (const [key, data] of Object.entries(CONFIG.sheetTypes)) {
+                const btn = document.createElement('button');
+                btn.className = getPillClasses(state.sheetType === key);
+                btn.innerText = data.name;
+                btn.onclick = () => setSheetType(key);
+                container.appendChild(btn);
+            }
+        }
+
+        function updateStaticButtons() {
+            // Posición
+            document.getElementById('btn-pos-left').className = `${getBtnClasses(state.discPosition === 'left')} flex-1 py-3 px-4`;
+            document.getElementById('btn-pos-top').className = `${getBtnClasses(state.discPosition === 'top')} flex-1 py-3 px-4`;
+
+            // Tamaño
+            document.getElementById('btn-disc-normal').className = `${getBtnClasses(state.discSize === 'normal')} flex-1 py-3 px-4 flex flex-col items-center justify-center`;
+            document.getElementById('btn-disc-grande').className = `${getBtnClasses(state.discSize === 'grande')} flex-1 py-3 px-4 flex flex-col items-center justify-center`;
+        }
+
+        function renderThemeOptions() {
+            const container = document.getElementById('theme-options');
+            container.innerHTML = '';
+            for (const [key, data] of Object.entries(CONFIG.themes)) {
+                const btn = document.createElement('button');
+                // Estilos base de tema (border rosa en claro, border morado en oscuro)
+                let borderClass = state.theme === key
+                    ? 'border-rose-400 dark:border-dark-accent shadow-lg'
+                    : 'border-transparent dark:border-[#333344] shadow-sm';
+
+                btn.className = `relative overflow-hidden rounded-2xl border-4 transition-all hover:scale-105 h-24 ${borderClass}`;
+
+                if (data.type === 'image') {
+                    btn.style.backgroundImage = `url(${data.thumbUrl})`;
+                    btn.style.backgroundSize = 'cover';
+                    btn.style.backgroundPosition = 'center';
+                } else {
+                    btn.style.background = 'linear-gradient(45deg, #FDE2E4, #EAD4FA, #D1F2EB)';
+                }
+
+                const label = document.createElement('div');
+                label.className = 'absolute bottom-0 left-0 right-0 bg-white/80 dark:bg-black/60 backdrop-blur-md text-xs font-bold text-gray-700 dark:text-gray-200 py-1.5 px-1';
+                label.innerText = data.name;
+
+                btn.appendChild(label);
+                btn.onclick = () => setTheme(key);
+                container.appendChild(btn);
+            }
+
+            const colorSelector = document.getElementById('solid-color-selector');
+            if (state.theme === 'solido') colorSelector.classList.remove('hidden');
+            else colorSelector.classList.add('hidden');
+        }
+
+        function renderCoverColors() {
+            const container = document.getElementById('cover-colors');
+            container.innerHTML = '';
+
+            CONFIG.coverColors.forEach(color => {
+                const btn = document.createElement('button');
+                btn.className = `color-swatch w-12 h-12 rounded-full shadow-sm border-4 ${state.customColor === color.hex ? 'border-gray-800 dark:border-white scale-110' : 'border-transparent'}`;
+                btn.style.backgroundColor = color.hex;
+                btn.title = color.name;
+                btn.onclick = () => setCustomColor(color.hex);
+                container.appendChild(btn);
+            });
+
+            // Botón "+" para Selector Nativo
+            const customPickerLabel = document.createElement('label');
+            const isCustomNotPreset = !CONFIG.coverColors.find(c => c.hex === state.customColor);
+
+            customPickerLabel.className = `color-swatch w-12 h-12 rounded-full shadow-sm border-4 flex items-center justify-center cursor-pointer bg-white dark:bg-[#232332] text-gray-400 dark:text-gray-500 hover:text-rose-500 dark:hover:text-dark-accent transition-colors ${isCustomNotPreset ? 'border-gray-800 dark:border-white scale-110 text-rose-500 dark:text-dark-accent' : 'border-transparent'}`;
+            customPickerLabel.title = "Elegir otro color";
+            customPickerLabel.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                <input type="color" class="w-0 h-0 opacity-0 absolute" value="${state.customColor}" onchange="setCustomColor(this.value)">
+            `;
+            container.appendChild(customPickerLabel);
+        }
+
+        function renderDiscColorPalette() {
+            const container = document.getElementById('disc-colors');
+            container.innerHTML = '';
+            CONFIG.discColors.forEach(color => {
+                const btn = document.createElement('button');
+                btn.className = `color-swatch w-10 h-10 rounded-full shadow-md border-2 border-white dark:border-[#333344]`;
+                btn.style.backgroundColor = color.hex;
+                btn.title = color.name;
+                btn.onclick = () => applyDiscColor(color.hex);
+                container.appendChild(btn);
+            });
+        }
+
+        function updateViewButtons() {
+            const btnFront = document.getElementById('btn-view-front');
+            const btnBack = document.getElementById('btn-view-back');
+
+            const activeClass = "px-5 py-2 rounded-full font-bold text-sm transition-all bg-white dark:bg-[#333344] shadow-sm text-rose-500 dark:text-dark-accent";
+            const inactiveClass = "px-5 py-2 rounded-full font-bold text-sm transition-all text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200";
+
+            btnFront.className = state.view === 'front' ? activeClass : inactiveClass;
+            btnBack.className = state.view === 'back' ? activeClass : inactiveClass;
+        }
+
+        /**
+         * 5. MANEJADORES DE ESTADO
+         */
+        function setSize(newSize) {
+            state.size = newSize;
+            if (!CONFIG.types[state.type].availableIn.includes(newSize)) state.type = 'notas';
+            syncDiscCount();
+            selectAllDiscs();
+            renderSizeOptions();
+            renderTypeOptions();
+            updatePreview();
+            updatePrice();
+        }
+
+        function setType(newType) { state.type = newType; renderTypeOptions(); updatePrice(); }
+        function setSheetType(newType) { state.sheetType = newType; renderSheetOptions(); }
+
+        function setDiscPosition(pos) {
+            state.discPosition = pos;
+            updateStaticButtons();
+            syncDiscCount();
+            selectAllDiscs();
+            updatePreview();
+        }
+
+        function setDiscSize(newSize) {
+            state.discSize = newSize;
+            updateStaticButtons();
+            updatePreview();
+            updatePrice();
+        }
+
+        function setTheme(newTheme) {
+            state.theme = newTheme;
+            renderThemeOptions();
+            updatePreview();
+        }
+
+        function setCustomColor(hex) {
+            state.customColor = hex;
+            renderCoverColors();
+            updatePreview();
+        }
+
+        function setView(view) {
+            state.view = view;
+            updateViewButtons();
+            updatePreview();
+        }
+
+        function selectAllDiscs() {
+            state.selectedDiscIndex = null;
+            document.getElementById('color-instruction').innerHTML = "Aplicar color a <strong>Todos los discos</strong>:";
+            updatePreview();
+        }
+
+        function selectSpecificDisc(index) {
+            state.selectedDiscIndex = index;
+            document.getElementById('color-instruction').innerHTML = `Aplicar color al <strong>Disco #${index + 1}</strong>:`;
+            updatePreview();
+        }
+
+        function applyDiscColor(hexColor) {
+            if (state.selectedDiscIndex === null) {
+                state.discColors = state.discColors.map(() => hexColor);
+            } else {
+                state.discColors[state.selectedDiscIndex] = hexColor;
+            }
+            updatePreview();
+        }
+
+        /**
+         * 6. MOTOR DE RENDERIZADO VISUAL
+         */
+        function updatePreview() {
+            const cover = document.getElementById('notebook-cover');
+            const discsContainer = document.getElementById('discs-container');
+            const sizeData = CONFIG.sizes[state.size];
+
+            cover.style.height = `${sizeData.height}px`;
+            cover.style.width = `${sizeData.width}px`;
+
+            const themeData = CONFIG.themes[state.theme];
+            cover.innerHTML = '';
+
+            if (state.view === 'front') {
+                if (themeData.type === 'image') {
+                    cover.style.backgroundImage = `url(${themeData.frontUrl})`;
+                    cover.style.backgroundColor = 'transparent';
+                } else {
+                    cover.style.backgroundImage = 'none';
+                    cover.style.backgroundColor = state.customColor;
+                    cover.innerHTML = `<div class="bg-white/40 dark:bg-black/30 backdrop-blur-sm px-6 py-4 rounded-xl shadow-sm text-center transform -rotate-2">
+                        <span class="block font-bold text-gray-800 dark:text-white text-xl">Mi Cuaderno</span>
+                        <span class="block text-gray-600 dark:text-gray-300 font-mono text-sm mt-1">${sizeData.name}</span>
+                    </div>`;
+                }
+            } else {
+                cover.style.backgroundImage = 'none';
+                if (themeData.type === 'image') {
+                    if (themeData.backUrl) cover.style.backgroundImage = `url(${themeData.backUrl})`;
+                    else cover.style.backgroundColor = themeData.backColor;
+                } else {
+                    cover.style.backgroundColor = state.customColor;
+                }
+
+                // Marca de agua @cuackdernos
+                // El texto será oscuro si el fondo no es oscuro. Para simplificar, usamos un gris oscuro con opacidad.
+                cover.innerHTML = `<div class="absolute bottom-6 left-0 right-0 text-center font-bold text-black/40 font-mono tracking-widest text-sm drop-shadow-sm">@cuackdernos</div>`;
+            }
+
+            let cornerClasses = '';
+            if (state.discPosition === 'left') {
+                cornerClasses = state.view === 'front' ? 'rounded-r-3xl rounded-l-md' : 'rounded-l-3xl rounded-r-md';
+            } else {
+                cornerClasses = 'rounded-b-3xl rounded-t-md';
+            }
+            cover.className = `notebook-page relative overflow-hidden flex items-center justify-center bg-center bg-cover bg-no-repeat ${cornerClasses}`;
+
+            discsContainer.innerHTML = '';
+            discsContainer.className = 'absolute flex justify-evenly z-20';
+
+            const wNormal = 28, hNormal = 16;
+            const wGrande = 28, hGrande = 24;
+
+            if (state.discPosition === 'left') {
+                if (state.view === 'front') discsContainer.classList.add('flex-col', '-left-3', 'top-4', 'bottom-4');
+                else discsContainer.classList.add('flex-col', '-right-3', 'top-4', 'bottom-4');
+                discsContainer.style.width = 'auto';
+                discsContainer.style.height = 'auto';
+            } else {
+                discsContainer.classList.add('flex-row', '-top-3', 'left-4', 'right-4');
+                discsContainer.style.width = 'auto';
+                discsContainer.style.height = 'auto';
+            }
+
+            state.discColors.forEach((color, index) => {
+                const discObj = document.createElement('div');
+                let w, h;
+
+                if (state.discPosition === 'left') {
+                    w = state.discSize === 'normal' ? wNormal : wGrande;
+                    h = state.discSize === 'normal' ? hNormal : hGrande;
+                } else {
+                    w = state.discSize === 'normal' ? hNormal : hGrande;
+                    h = state.discSize === 'normal' ? wNormal : wGrande;
+                }
+
+                let classes = 'disc cursor-pointer rounded-full bg-white relative';
+                if (state.selectedDiscIndex === index) classes += ' selected';
+
+                discObj.className = classes;
+                discObj.style.backgroundColor = color;
+                discObj.style.width = `${w}px`;
+                discObj.style.height = `${h}px`;
+
+                discObj.onclick = () => selectSpecificDisc(index);
+                discsContainer.appendChild(discObj);
+            });
+        }
+
+        /**
+         * 7. PRECIO Y WHATSAPP
+         */
+        function updatePrice() {
+            let total = CONFIG.sizes[state.size].basePrice + CONFIG.types[state.type].extra + CONFIG.discSizes[state.discSize].extra;
+            document.getElementById('total-price').innerText = `$${total.toLocaleString('es-AR')}`;
+        }
+
+        function sendWhatsApp() {
+            let total = CONFIG.sizes[state.size].basePrice + CONFIG.types[state.type].extra + CONFIG.discSizes[state.discSize].extra;
+            const sizeName = CONFIG.sizes[state.size].name;
+            const typeName = CONFIG.types[state.type].name;
+            const sheetName = CONFIG.sheetTypes[state.sheetType].name;
+            const positionName = state.discPosition === 'left' ? 'Lado Izquierdo' : 'Lado Superior';
+            const discSizeName = CONFIG.discSizes[state.discSize].name;
+
+            let themeDesc = CONFIG.themes[state.theme].name;
+            if (state.theme === 'solido') {
+                const colorData = CONFIG.coverColors.find(c => c.hex.toLowerCase() === state.customColor.toLowerCase());
+                themeDesc += ` (Color: ${colorData ? colorData.name : state.customColor})`;
+            }
+
+            const firstColor = state.discColors[0];
+            const allSame = state.discColors.every(c => c === firstColor);
+            let discsText = allSame
+                ? `Todos color ${(CONFIG.discColors.find(c => c.hex.toLowerCase() === firstColor.toLowerCase()) || {}).name || firstColor}`
+                : "Multicolor (Configurado en web)";
+
+            let text = `👋 Hola! Me gustaría encargar un Cuackderno con esta configuración:%0A%0A`;
+            text += `📏 *Tamaño:* ${sizeName}%0A`;
+            text += `📝 *Interior principal:* ${typeName}%0A`;
+            text += `📄 *Tipo de hojas:* ${sheetName}%0A`;
+            text += `🎨 *Tema de Portada:* ${themeDesc}%0A`;
+            text += `💿 *Discos:* Tamaño ${discSizeName} - Posición: ${positionName}%0A`;
+            text += `   ↳ *Color de discos:* ${discsText} (${state.discColors.length} unidades)%0A%0A`;
+            text += `💰 *Costo Estimado:* $${total.toLocaleString('es-AR')}%0A%0A`;
+            text += `¿Me confirmas cómo seguimos? Gracias! ✨`;
+
+            window.open(`https://wa.me/${CONFIG.whatsappNumber}?text=${text}`, '_blank');
+        }
+
+        window.onload = init;
+    </script>
+</body>
+
+</html>
