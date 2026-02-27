@@ -1,0 +1,98 @@
+/* Fondos con patrón de puntos (Claro y Oscuro) */
+        body {
+            background-color: #FFF5F7;
+            background-image: radial-gradient(#FDE2E4 1px, transparent 1px);
+            background-size: 20px 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .dark body {
+            background-color: #1a1a24;
+            background-image: radial-gradient(#2a2a3a 1px, transparent 1px);
+        }
+
+        /* Scrollbar adaptativo */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #FDE2E4;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ffb3ba;
+        }
+
+        .dark ::-webkit-scrollbar-thumb {
+            background: #333344;
+        }
+
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #bfaee3;
+        }
+
+        .transition-all {
+            transition-property: all;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 300ms;
+        }
+
+        /* Cuaderno Visual */
+        .notebook-page {
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.02), 5px 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .dark .notebook-page {
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2), 5px 5px 15px rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Discos interactivos */
+        .disc {
+            transition: all 0.2s ease;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.15), inset -2px -2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .disc:hover {
+            transform: scale(1.1);
+            z-index: 30;
+        }
+
+        /* Borde de selección de disco (Claro: Rosa, Oscuro: Morado) */
+        .disc.selected {
+            box-shadow: 0 0 0 3px white, 0 0 0 6px #ff9a9e;
+            transform: scale(1.15);
+            z-index: 40;
+        }
+
+        .dark .disc.selected {
+            box-shadow: 0 0 0 3px #232332, 0 0 0 6px #bfaee3;
+        }
+
+        .option-btn {
+            transition: all 0.2s;
+        }
+
+        .color-swatch {
+            transition: transform 0.2s;
+        }
+
+        .color-swatch:hover {
+            transform: scale(1.15);
+        }
+
+        /* Ocultar input color nativo */
+        input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        input[type="color"]::-webkit-color-swatch {
+            border: none;
+        }
