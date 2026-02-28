@@ -3,7 +3,7 @@
  */
 
 const CONFIG = {
-    whatsappNumber: "549000000000", // REEMPLAZAR CON TU NÚMERO
+    whatsappNumber: "5492604841257", // REEMPLAZAR CON TU NÚMERO
 
     sizes: {
         'A4': { name: 'A4 (Grande)', basePrice: 15000, height: 420, width: 297, discs: { left: 11, top: 8 } },
@@ -26,25 +26,201 @@ const CONFIG = {
     },
 
     themes: {
-        'gatito': {
-            name: 'Gatito Cute',
+        'Enfermeria1': {
+            name: 'Enfermería Rosa',
             type: 'image',
-            thumbUrl: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=150&q=80',
-            frontUrl: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=600&q=80',
+            thumbUrl: './assets/thumbnails/1.jpg',
+            frontUrl: './assets/covers/1.jpg',
             backColor: '#F5ECE4',
-            backUrl: ''
+            backUrl: './assets/covers/1BP.jpg'
         },
-        'flores': {
-            name: 'Flores',
+        'Enfermeria2': {
+            name: 'Enfermería Azul',
             type: 'image',
-            thumbUrl: 'https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=150&q=80',
-            frontUrl: 'https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=600&q=80',
-            backColor: '#E6F0E9',
-            backUrl: ''
+            thumbUrl: './assets/thumbnails/2.jpg',
+            frontUrl: './assets/covers/2.jpg',
+            backColor: '#F5ECE4',
+            backUrl: './assets/covers/2BP.jpg'
         },
-        'solido': {
-            name: 'Sólido',
-            type: 'color',
+        'Enfermeria3': {
+            name: 'Enfermería Marrón',
+            type: 'image',
+            thumbUrl: './assets/thumbnails/3.jpg',
+            frontUrl: './assets/covers/3.jpg',
+            backColor: '#F5ECE4',
+            backUrl: './assets/covers/3BP.jpg'
+        },
+        'Enfermeria4': {
+            name: 'Enfermería Mundo',
+            type: 'image',
+            thumbUrl: './assets/thumbnails/4.jpg',
+            frontUrl: './assets/covers/4.jpg',
+            backColor: '#F5ECE4',
+            backUrl: './assets/covers/4BP.jpg'
+        },
+        'CompositionBook': {
+            name: 'Composition Book',
+            type: 'image',
+            thumbUrl: './assets/thumbnails/18.jpg',
+            frontUrl: './assets/covers/18.jpg',
+            backColor: '#F5ECE4',
+            backUrl: './assets/covers/18BP.jpg'
+        },
+        'CompositionBook1': {
+            name: 'CompBook Corazon',
+            type: 'image',
+            thumbUrl: './assets/thumbnails/5.jpg',
+            frontUrl: './assets/covers/5-6.jpg',
+            backColor: '#F5ECE4',
+            backUrl: './assets/covers/5BP.jpg'
+        },
+        'CompositionBook2': {
+            name: 'CompBook Esqueleto',
+            type: 'image',
+            thumbUrl: './assets/thumbnails/5.jpg',
+            frontUrl: './assets/covers/5-6.jpg',
+            backColor: '#F5ECE4',
+            backUrl: './assets/covers/6BP.jpg'
+        },
+        'CompositionBook3': {
+            name: 'CompBook SistNervioso',
+            type: 'image',
+            thumbUrl: './assets/thumbnails/7.jpg',
+            frontUrl: './assets/covers/7.jpg',
+            backColor: '#F5ECE4',
+            backUrl: './assets/covers/7BP.jpg'
+        },
+        'GateteVerde': {
+            name: 'Gatete Verde',
+            type: 'image',
+            thumbUrl: './assets/thumbnails/8.jpg',
+            frontUrl: './assets/covers/8.jpg',
+            backColor: '#F5ECE4',
+            backUrl: './assets/covers/8BP.jpg'
+        },
+        'GateteNaranja': {
+            name: 'Gatete Naranja',
+            type: 'image',
+            thumbUrl: './assets/thumbnails/9.jpg',
+            frontUrl: './assets/covers/9.jpg',
+            backColor: '#F5ECE4',
+            backUrl: './assets/covers/9BP.jpg'
+        },
+        'GateteRosa': {
+            name: 'Gatete Rosa',
+            type: 'image',
+            thumbUrl: './assets/thumbnails/10.jpg',
+            frontUrl: './assets/covers/10.jpg',
+            backColor: '#F5ECE4',
+            backUrl: './assets/covers/10BP.jpg'
+        },
+        'POPCat': {
+            name: 'POP Cat',
+            type: 'image',
+            thumbUrl: './assets/thumbnails/11.jpg',
+            frontUrl: './assets/covers/11.jpg',
+            backColor: '#F5ECE4',
+            backUrl: './assets/covers/11BP.jpg'
+        },
+        'GateteEstrella': {
+            name: 'Gatete Estrella',
+            type: 'image',
+            thumbUrl: './assets/thumbnails/12.jpg',
+            frontUrl: './assets/covers/12.jpg',
+            backColor: '#F5ECE4',
+            backUrl: './assets/covers/12BP.jpg'
+        },
+        'ImJustAGirl': {
+            name: 'I\'m Just A Girl',
+            type: 'image',
+            thumbUrl: './assets/thumbnails/13.jpg',
+            frontUrl: './assets/covers/13.jpg',
+            backColor: '#F5ECE4',
+            backUrl: './assets/covers/13BP.jpg'
+        },
+        'Butterfly1': {
+            name: 'Familia Mariposas',
+            type: 'image',
+            thumbUrl: './assets/thumbnails/14.jpg',
+            frontUrl: './assets/covers/14-15.jpg',
+            backColor: '#F5ECE4',
+            backUrl: './assets/covers/14BP.jpg'
+        },
+        'Butterfly2': {
+            name: 'Mariposas',
+            type: 'image',
+            thumbUrl: './assets/thumbnails/14.jpg',
+            frontUrl: './assets/covers/14-15.jpg',
+            backColor: '#F5ECE4',
+            backUrl: './assets/covers/15BP.jpg'
+        },
+        'FocusOnTheGood': {
+            name: 'Focus On The Good',
+            type: 'image',
+            thumbUrl: './assets/thumbnails/16.jpg',
+            frontUrl: './assets/covers/16.jpg',
+            backColor: '#F5ECE4',
+            backUrl: './assets/covers/16BP.jpg'
+        },
+        'Panchito': {
+            name: 'Panchito',
+            type: 'image',
+            thumbUrl: './assets/thumbnails/17.jpg',
+            frontUrl: './assets/covers/17.jpg',
+            backColor: '#F5ECE4',
+            backUrl: './assets/covers/17BP.jpg'
+        },
+        'PixelArtCats': {
+            name: 'Pixel Art Cats',
+            type: 'image',
+            thumbUrl: './assets/thumbnails/19.jpg',
+            frontUrl: './assets/covers/19.jpg',
+            backColor: '#F5ECE4',
+            backUrl: './assets/covers/19BP.jpg'
+        },
+        'PixelArtDogs': {
+            name: 'Pixel Art Dogs',
+            type: 'image',
+            thumbUrl: './assets/thumbnails/20.jpg',
+            frontUrl: './assets/covers/20.jpg',
+            backColor: '#F5ECE4',
+            backUrl: './assets/covers/19BP.jpg'
+        },
+        'Girasol': {
+            name: 'Girasol',
+            type: 'image',
+            thumbUrl: './assets/thumbnails/21.jpg',
+            frontUrl: './assets/covers/21.jpg',
+            backColor: '#F5ECE4',
+            backUrl: './assets/covers/21BP.jpg'
+        },
+        'Esteto': {
+            name: 'Estetoscopio',
+            type: 'image',
+            thumbUrl: './assets/thumbnails/22.jpg',
+            frontUrl: './assets/covers/22.jpg',
+            backColor: '#F5ECE4',
+            backUrl: './assets/covers/22BP.jpg'
+        },
+        'Heart': {
+            name: 'Corazón',
+            type: 'image',
+            thumbUrl: './assets/thumbnails/23.jpg',
+            frontUrl: './assets/covers/23.jpg',
+            backColor: '#F5ECE4',
+            backUrl: './assets/covers/23BP.jpg'
+        },
+        'Heart2': {
+            name: 'Corazones',
+            type: 'image',
+            thumbUrl: './assets/thumbnails/24.jpg',
+            frontUrl: './assets/covers/24.jpg',
+            backColor: '#F5ECE4',
+            backUrl: './assets/covers/24BP.jpg'
+        },
+        'personalizado': {
+            name: 'Mi Diseño',
+            type: 'upload',
             thumbUrl: ''
         }
     },
@@ -84,8 +260,10 @@ let state = {
     sheetType: 'rayadas',
     discPosition: 'left',
     discSize: 'normal',
-    theme: 'gatito',
+    theme: 'Panchito',
     customColor: '#FDE2E4',
+    customUploadFront: null,
+    customUploadBack: null,
     discColors: [],
     selectedDiscIndex: null,
     view: 'front'
@@ -238,6 +416,12 @@ function renderThemeOptions() {
             btn.style.background = 'linear-gradient(45deg, #FDE2E4, #EAD4FA, #D1F2EB)';
         }
 
+        if (data.type === 'upload') {
+            btn.style.background = 'transparent';
+            btn.classList.add('border-dashed', 'border-gray-300', 'dark:border-gray-600', 'flex', 'items-center', 'justify-center');
+            btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>`;
+        }
+
         const label = document.createElement('div');
         label.className = 'absolute bottom-0 left-0 right-0 bg-white/80 dark:bg-black/60 backdrop-blur-md text-xs font-bold text-gray-700 dark:text-gray-200 py-1.5 px-1';
         label.innerText = data.name;
@@ -248,8 +432,18 @@ function renderThemeOptions() {
     }
 
     const colorSelector = document.getElementById('solid-color-selector');
-    if (state.theme === 'solido') colorSelector.classList.remove('hidden');
-    else colorSelector.classList.add('hidden');
+    const uploadSelector = document.getElementById('custom-upload-selector');
+
+    if (state.theme === 'solido') {
+        colorSelector.classList.remove('hidden');
+        if (uploadSelector) uploadSelector.classList.add('hidden');
+    } else if (state.theme === 'personalizado') {
+        if (uploadSelector) uploadSelector.classList.remove('hidden');
+        colorSelector.classList.add('hidden');
+    } else {
+        colorSelector.classList.add('hidden');
+        if (uploadSelector) uploadSelector.classList.add('hidden');
+    }
 }
 
 function renderCoverColors() {
@@ -352,6 +546,25 @@ function setView(view) {
     updatePreview();
 }
 
+function handleImageUpload(event, side) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            if (side === 'front') {
+                state.customUploadFront = e.target.result;
+                state.view = 'front'; // Muestra automáticamente la portada
+            } else {
+                state.customUploadBack = e.target.result;
+                state.view = 'back'; // Muestra automáticamente la contraportada
+            }
+            updateViewButtons();
+            updatePreview();
+        }
+        reader.readAsDataURL(file);
+    }
+}
+
 function selectAllDiscs() {
     state.selectedDiscIndex = null;
     document.getElementById('color-instruction').innerHTML = "Aplicar color a <strong>Todos los discos</strong>:";
@@ -391,26 +604,46 @@ function updatePreview() {
         if (themeData.type === 'image') {
             cover.style.backgroundImage = `url(${themeData.frontUrl})`;
             cover.style.backgroundColor = 'transparent';
+        } else if (themeData.type === 'upload') {
+            if (state.customUploadFront) {
+                cover.style.backgroundImage = `url(${state.customUploadFront})`;
+                cover.style.backgroundColor = 'transparent';
+                cover.innerHTML = '';
+            } else {
+                cover.style.backgroundImage = 'none';
+                cover.style.backgroundColor = document.documentElement.classList.contains('dark') ? '#2a2a3a' : '#f3f4f6';
+                cover.innerHTML = `<div class="text-gray-400 text-sm font-bold text-center px-4">Sube tu Portada</div>`;
+            }
         } else {
             cover.style.backgroundImage = 'none';
             cover.style.backgroundColor = state.customColor;
             cover.innerHTML = `<div class="bg-white/40 dark:bg-black/30 backdrop-blur-sm px-6 py-4 rounded-xl shadow-sm text-center transform -rotate-2">
-                        <span class="block font-bold text-gray-800 dark:text-white text-xl">Mi Cuaderno</span>
-                        <span class="block text-gray-600 dark:text-gray-300 font-mono text-sm mt-1">${sizeData.name}</span>
-                    </div>`;
+                <span class="block font-bold text-gray-800 dark:text-white text-xl">Mi Cuaderno</span>
+                <span class="block text-gray-600 dark:text-gray-300 font-mono text-sm mt-1">${sizeData.name}</span>
+            </div>`;
         }
     } else {
         cover.style.backgroundImage = 'none';
         if (themeData.type === 'image') {
             if (themeData.backUrl) cover.style.backgroundImage = `url(${themeData.backUrl})`;
             else cover.style.backgroundColor = themeData.backColor;
+        } else if (themeData.type === 'upload') {
+            if (state.customUploadBack) {
+                cover.style.backgroundImage = `url(${state.customUploadBack})`;
+                cover.style.backgroundColor = 'transparent';
+                //    cover.innerHTML = `<div class="absolute bottom-6 left-0 right-0 text-center font-bold text-black/40 font-mono tracking-widest text-sm drop-shadow-sm">@cuackdernos</div>`;
+            } else {
+                cover.style.backgroundColor = document.documentElement.classList.contains('dark') ? '#2a2a3a' : '#f3f4f6';
+                //    cover.innerHTML = `<div class="text-gray-400 text-sm font-bold text-center px-4">Sube tu Contraportada</div><div class="absolute bottom-6 left-0 right-0 text-center font-bold text-black/40 font-mono tracking-widest text-sm drop-shadow-sm">@cuackdernos</div>`;
+            }
         } else {
             cover.style.backgroundColor = state.customColor;
         }
 
-        // Marca de agua @cuackdernos
-        // El texto será oscuro si el fondo no es oscuro. Para simplificar, usamos un gris oscuro con opacidad.
-        cover.innerHTML = `<div class="absolute bottom-6 left-0 right-0 text-center font-bold text-black/40 font-mono tracking-widest text-sm drop-shadow-sm">@cuackdernos</div>`;
+        // Marca de agua @cuackdernos (Omitida para el tipo upload ya que se renderiza dentro del if)
+        //if (themeData.type !== 'upload') {
+        //    cover.innerHTML = `<div class="absolute bottom-6 left-0 right-0 text-center font-bold text-black/40 font-mono tracking-widest text-sm drop-shadow-sm">@cuackdernos</div>`;
+        //}
     }
 
     let cornerClasses = '';
@@ -487,6 +720,8 @@ function sendWhatsApp() {
     if (state.theme === 'solido') {
         const colorData = CONFIG.coverColors.find(c => c.hex.toLowerCase() === state.customColor.toLowerCase());
         themeDesc += ` (Color: ${colorData ? colorData.name : state.customColor})`;
+    } else if (state.theme === 'personalizado') {
+        themeDesc = `Diseño Propio (Te enviaré las imágenes por el chat)`;
     }
 
     const firstColor = state.discColors[0];
@@ -495,17 +730,18 @@ function sendWhatsApp() {
         ? `Todos color ${(CONFIG.discColors.find(c => c.hex.toLowerCase() === firstColor.toLowerCase()) || {}).name || firstColor}`
         : "Multicolor (Configurado en web)";
 
-    let text = `👋 Hola! Me gustaría encargar un Cuackderno con esta configuración:%0A%0A`;
-    text += `📏 *Tamaño:* ${sizeName}%0A`;
-    text += `📝 *Interior principal:* ${typeName}%0A`;
-    text += `📄 *Tipo de hojas:* ${sheetName}%0A`;
-    text += `🎨 *Tema de Portada:* ${themeDesc}%0A`;
-    text += `💿 *Discos:* Tamaño ${discSizeName} - Posición: ${positionName}%0A`;
-    text += `   ↳ *Color de discos:* ${discsText} (${state.discColors.length} unidades)%0A%0A`;
-    text += `💰 *Costo Estimado:* $${total.toLocaleString('es-AR')}%0A%0A`;
-    text += `¿Me confirmas cómo seguimos? Gracias! ✨`;
+    let text = `Hola Cuacky! Me gustaría encargar un Cuackderno con esta configuración:\n\n`;
+    text += ` -*Tamaño:* ${sizeName}\n`;
+    text += ` -*Interior principal:* ${typeName}\n`;
+    text += ` -*Tipo de hojas:* ${sheetName}\n`;
+    text += ` -*Tema de Portada:* ${themeDesc}\n`;
+    text += ` -*Discos:* Tamaño ${discSizeName} - Posición: ${positionName}\n`;
+    text += `   ↳ *Color de discos:* ${discsText} (${state.discColors.length} unidades)\n\n`;
+    text += ` -*Costo Estimado:* $${total.toLocaleString('es-AR')}\n\n`;
+    text += `¿Me confirmas cómo seguimos? Gracias! <3\n\n`;
+    text += `Colocar notas adicionales a continuación:`;
 
-    window.open(`https://wa.me/${CONFIG.whatsappNumber}?text=${text}`, '_blank');
+    window.open(`https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(text)}`, '_blank');
 }
 
 window.onload = init;
