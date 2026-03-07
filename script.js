@@ -6,16 +6,18 @@ const CONFIG = {
     whatsappNumber: "5492604841257", // REEMPLAZAR CON TU NÚMERO
 
     sizes: {
-        'A4': { name: 'A4 (Grande)', basePrice: 15000, height: 420, width: 297, discs: { left: 11, top: 8 } },
-        'A5': { name: 'A5 (Mediano)', basePrice: 10000, height: 350, width: 240, discs: { left: 8, top: 6 } },
-        'A6': { name: 'A6 (Pequeño)', basePrice: 7500, height: 260, width: 180, discs: { left: 6, top: 4 } },
-        'Ficha': { name: 'Ficha N3', basePrice: 5000, height: 180, width: 260, discs: { left: 5, top: 6 } }
+        'A4': { name: 'A4 (Grande)', basePrice: 19000, height: 420, width: 297, discs: { left: 11, top: 8 } },
+        'A5': { name: 'A5 (Mediano)', basePrice: 14000, height: 350, width: 240, discs: { left: 8, top: 6 } },
+        'A6': { name: 'A6 (Pequeño)', basePrice: 11000, height: 260, width: 180, discs: { left: 6, top: 4 } },
+        'Ficha': { name: 'Ficha N3', basePrice: 9000, height: 180, width: 260, discs: { left: 5, top: 6 } }
     },
 
     types: {
         'notas': { name: 'Notas Clásico', extra: 0, availableIn: ['A4', 'A5', 'A6', 'Ficha'] },
-        'planner': { name: 'Planner Perpetuo', extra: 3000, availableIn: ['A5'] },
-        'enfermeria': { name: 'Libreta Enfermería', extra: 2000, availableIn: ['A6'] }
+        'planner': { name: 'Planner Perpetuo', extra: 1000, availableIn: ['A5'] },
+        'enfermeria': { name: 'Libreta Enfermería', extra: 2000, availableIn: ['A6'] },
+        'dibujo': { name: 'Dibujo', extra: -1000, availableIn: ['A4'] },
+        'hojaspropias': { name: 'Utilizar Mis Fichas', extra: -2500, availableIn: ['Ficha'] }
     },
 
     sheetTypes: {
@@ -26,7 +28,7 @@ const CONFIG = {
     },
 
     themes: {
-        'Enfermeria1': {
+        '1': {
             name: 'Enfermería Rosa',
             type: 'image',
             thumbUrl: './assets/thumbnails/1.jpg',
@@ -34,7 +36,7 @@ const CONFIG = {
             backColor: '#F5ECE4',
             backUrl: './assets/covers/1BP.jpg'
         },
-        'Enfermeria2': {
+        '2': {
             name: 'Enfermería Azul',
             type: 'image',
             thumbUrl: './assets/thumbnails/2.jpg',
@@ -42,7 +44,7 @@ const CONFIG = {
             backColor: '#F5ECE4',
             backUrl: './assets/covers/2BP.jpg'
         },
-        'Enfermeria3': {
+        '3': {
             name: 'Enfermería Marrón',
             type: 'image',
             thumbUrl: './assets/thumbnails/3.jpg',
@@ -50,7 +52,7 @@ const CONFIG = {
             backColor: '#F5ECE4',
             backUrl: './assets/covers/3BP.jpg'
         },
-        'Enfermeria4': {
+        '4': {
             name: 'Enfermería Mundo',
             type: 'image',
             thumbUrl: './assets/thumbnails/4.jpg',
@@ -58,15 +60,15 @@ const CONFIG = {
             backColor: '#F5ECE4',
             backUrl: './assets/covers/4BP.jpg'
         },
-        'CompositionBook': {
-            name: 'Composition Book',
+        '18': {
+            name: 'CompBook',
             type: 'image',
             thumbUrl: './assets/thumbnails/18.jpg',
             frontUrl: './assets/covers/18.jpg',
             backColor: '#F5ECE4',
             backUrl: './assets/covers/18BP.jpg'
         },
-        'CompositionBook1': {
+        '5': {
             name: 'CompBook Corazon',
             type: 'image',
             thumbUrl: './assets/thumbnails/5.jpg',
@@ -74,7 +76,7 @@ const CONFIG = {
             backColor: '#F5ECE4',
             backUrl: './assets/covers/5BP.jpg'
         },
-        'CompositionBook2': {
+        '6': {
             name: 'CompBook Esqueleto',
             type: 'image',
             thumbUrl: './assets/thumbnails/5.jpg',
@@ -82,15 +84,15 @@ const CONFIG = {
             backColor: '#F5ECE4',
             backUrl: './assets/covers/6BP.jpg'
         },
-        'CompositionBook3': {
-            name: 'CompBook SistNervioso',
+        '7': {
+            name: 'CompBook SistNer',
             type: 'image',
             thumbUrl: './assets/thumbnails/7.jpg',
             frontUrl: './assets/covers/7.jpg',
             backColor: '#F5ECE4',
             backUrl: './assets/covers/7BP.jpg'
         },
-        'GateteVerde': {
+        '8': {
             name: 'Gatete Verde',
             type: 'image',
             thumbUrl: './assets/thumbnails/8.jpg',
@@ -98,7 +100,7 @@ const CONFIG = {
             backColor: '#F5ECE4',
             backUrl: './assets/covers/8BP.jpg'
         },
-        'GateteNaranja': {
+        '9': {
             name: 'Gatete Naranja',
             type: 'image',
             thumbUrl: './assets/thumbnails/9.jpg',
@@ -106,7 +108,7 @@ const CONFIG = {
             backColor: '#F5ECE4',
             backUrl: './assets/covers/9BP.jpg'
         },
-        'GateteRosa': {
+        '10': {
             name: 'Gatete Rosa',
             type: 'image',
             thumbUrl: './assets/thumbnails/10.jpg',
@@ -114,7 +116,7 @@ const CONFIG = {
             backColor: '#F5ECE4',
             backUrl: './assets/covers/10BP.jpg'
         },
-        'POPCat': {
+        '11': {
             name: 'POP Cat',
             type: 'image',
             thumbUrl: './assets/thumbnails/11.jpg',
@@ -122,7 +124,7 @@ const CONFIG = {
             backColor: '#F5ECE4',
             backUrl: './assets/covers/11BP.jpg'
         },
-        'GateteEstrella': {
+        '12': {
             name: 'Gatete Estrella',
             type: 'image',
             thumbUrl: './assets/thumbnails/12.jpg',
@@ -130,7 +132,7 @@ const CONFIG = {
             backColor: '#F5ECE4',
             backUrl: './assets/covers/12BP.jpg'
         },
-        'ImJustAGirl': {
+        '13': {
             name: 'I\'m Just A Girl',
             type: 'image',
             thumbUrl: './assets/thumbnails/13.jpg',
@@ -138,7 +140,7 @@ const CONFIG = {
             backColor: '#F5ECE4',
             backUrl: './assets/covers/13BP.jpg'
         },
-        'Butterfly1': {
+        '14': {
             name: 'Familia Mariposas',
             type: 'image',
             thumbUrl: './assets/thumbnails/14.jpg',
@@ -146,7 +148,7 @@ const CONFIG = {
             backColor: '#F5ECE4',
             backUrl: './assets/covers/14BP.jpg'
         },
-        'Butterfly2': {
+        '15': {
             name: 'Mariposas',
             type: 'image',
             thumbUrl: './assets/thumbnails/14.jpg',
@@ -154,7 +156,7 @@ const CONFIG = {
             backColor: '#F5ECE4',
             backUrl: './assets/covers/15BP.jpg'
         },
-        'FocusOnTheGood': {
+        '16': {
             name: 'Focus On The Good',
             type: 'image',
             thumbUrl: './assets/thumbnails/16.jpg',
@@ -162,7 +164,7 @@ const CONFIG = {
             backColor: '#F5ECE4',
             backUrl: './assets/covers/16BP.jpg'
         },
-        'Panchito': {
+        '17': {
             name: 'Panchito',
             type: 'image',
             thumbUrl: './assets/thumbnails/17.jpg',
@@ -170,7 +172,7 @@ const CONFIG = {
             backColor: '#F5ECE4',
             backUrl: './assets/covers/17BP.jpg'
         },
-        'PixelArtCats': {
+        '19': {
             name: 'Pixel Art Cats',
             type: 'image',
             thumbUrl: './assets/thumbnails/19.jpg',
@@ -178,7 +180,7 @@ const CONFIG = {
             backColor: '#F5ECE4',
             backUrl: './assets/covers/19BP.jpg'
         },
-        'PixelArtDogs': {
+        '20': {
             name: 'Pixel Art Dogs',
             type: 'image',
             thumbUrl: './assets/thumbnails/20.jpg',
@@ -186,7 +188,7 @@ const CONFIG = {
             backColor: '#F5ECE4',
             backUrl: './assets/covers/19BP.jpg'
         },
-        'Girasol': {
+        '21': {
             name: 'Girasol',
             type: 'image',
             thumbUrl: './assets/thumbnails/21.jpg',
@@ -194,29 +196,69 @@ const CONFIG = {
             backColor: '#F5ECE4',
             backUrl: './assets/covers/21BP.jpg'
         },
-        'Esteto': {
-            name: 'Estetoscopio',
+        '22': {
+            name: 'Enfermería Pink',
             type: 'image',
             thumbUrl: './assets/thumbnails/22.jpg',
             frontUrl: './assets/covers/22.jpg',
             backColor: '#F5ECE4',
             backUrl: './assets/covers/22BP.jpg'
         },
-        'Heart': {
-            name: 'Corazón',
+        '23': {
+            name: 'I\'m a Nurse',
             type: 'image',
             thumbUrl: './assets/thumbnails/23.jpg',
             frontUrl: './assets/covers/23.jpg',
             backColor: '#F5ECE4',
             backUrl: './assets/covers/23BP.jpg'
         },
-        'Heart2': {
-            name: 'Corazones',
+        '24': {
+            name: 'Touch Me',
             type: 'image',
             thumbUrl: './assets/thumbnails/24.jpg',
             frontUrl: './assets/covers/24.jpg',
             backColor: '#F5ECE4',
             backUrl: './assets/covers/24BP.jpg'
+        },
+        '25': {
+            name: 'Estetoscopio',
+            type: 'image',
+            thumbUrl: './assets/thumbnails/25.jpg',
+            frontUrl: './assets/covers/25.jpg',
+            backColor: '#F5ECE4',
+            backUrl: './assets/covers/25BP.jpg'
+        },
+        '26': {
+            name: 'Corazón',
+            type: 'image',
+            thumbUrl: './assets/thumbnails/26.jpg',
+            frontUrl: './assets/covers/26.jpg',
+            backColor: '#F5ECE4',
+            backUrl: './assets/covers/26BP.jpg'
+        },
+        '27': {
+            name: 'Corazones',
+            type: 'image',
+            thumbUrl: './assets/thumbnails/27.jpg',
+            frontUrl: './assets/covers/27.jpg',
+            backColor: '#F5ECE4',
+            backUrl: './assets/covers/27BP.jpg'
+        },
+        '28': {
+            name: 'Sky',
+            type: 'image',
+            thumbUrl: './assets/thumbnails/28.jpg',
+            frontUrl: './assets/covers/28.jpg',
+            backColor: '#F5ECE4',
+            backUrl: './assets/covers/28BP.jpg'
+        },
+        '29': {
+            name: 'Firewatch',
+            type: 'image',
+            thumbUrl: './assets/thumbnails/29.jpg',
+            frontUrl: './assets/covers/29.jpg',
+            backColor: '#F5ECE4',
+            backUrl: './assets/covers/29BP.jpg'
         },
         'personalizado': {
             name: 'Mi Diseño',
@@ -227,18 +269,22 @@ const CONFIG = {
 
     discSizes: {
         'normal': { name: 'Normal (24mm)', extra: 0 },
-        'grande': { name: 'Grande (32mm)', extra: 1500 }
+        'grande': { name: 'Grande (32mm)', extra: 1000 }
     },
 
     discColors: [
-        { id: 'rosa', hex: '#FF9A9E', name: 'Rosa Pastel' },
-        { id: 'menta', hex: '#B5EAD7', name: 'Menta' },
-        { id: 'lila', hex: '#C7CEEA', name: 'Lila' },
-        { id: 'celeste', hex: '#A2C2E6', name: 'Celeste' },
-        { id: 'amarillo', hex: '#FFF5BA', name: 'Amarillo' },
         { id: 'blanco', hex: '#FFFFFF', name: 'Blanco' },
-        { id: 'transparente', hex: '#E8E8E8', name: 'Transparente' },
-        { id: 'negro', hex: '#333333', name: 'Negro' }
+        { id: 'arena', hex: '#E2CAAA', name: 'Arena' },
+        { id: 'plátano', hex: '#F2E37C', name: 'Plátano' },
+        { id: 'salmón', hex: '#FF8E7A', name: 'Salmón' },
+        { id: 'rosapastel', hex: '#ff62b1ff', name: 'Rosa Pastel' },
+        { id: 'rojo', hex: '#E63946', name: 'Rojo' },
+        { id: 'borravino', hex: '#6B2D39', name: 'Borravino' },
+        { id: 'lila', hex: '#B19CD9', name: 'Lila' },
+        { id: 'Aqua', hex: '#64CCC5', name: 'Aqua' },
+        { id: 'lima', hex: '#A3E635', name: 'Lima' },
+        { id: 'Nórdico', hex: '#5d7e64ff', name: 'Nórdico' },
+        { id: 'negro', hex: '#1A1A1A', name: 'Negro' }
     ],
 
     coverColors: [
@@ -260,7 +306,7 @@ let state = {
     sheetType: 'rayadas',
     discPosition: 'left',
     discSize: 'normal',
-    theme: 'Panchito',
+    theme: '17',
     customColor: '#FDE2E4',
     customUploadFront: null,
     customUploadBack: null,
@@ -738,7 +784,7 @@ function sendWhatsApp() {
     text += ` -*Discos:* Tamaño ${discSizeName} - Posición: ${positionName}\n`;
     text += `   ↳ *Color de discos:* ${discsText} (${state.discColors.length} unidades)\n\n`;
     text += ` -*Costo Estimado:* $${total.toLocaleString('es-AR')}\n\n`;
-    text += `¿Me confirmas cómo seguimos? Gracias! <3\n\n`;
+    text += `¿Me confirmas cómo seguimos? Gracias! <3 \n\n`;
     text += `Colocar notas adicionales a continuación:`;
 
     window.open(`https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(text)}`, '_blank');
