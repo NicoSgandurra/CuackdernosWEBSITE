@@ -15,7 +15,7 @@ const CONFIG = {
     types: {
         'notas': { name: 'Notas Clásico', extra: 0, availableIn: ['A4', 'A5', 'A6', 'Ficha'] },
         'planner': { name: 'Planner Perpetuo', extra: 1000, availableIn: ['A5'] },
-        'enfermeria': { name: 'Libreta Enfermería', extra: 2000, availableIn: ['A6'] },
+        'enfermeria': { name: 'Libreta Enfermería', extra: 2000, availableIn: ['A6', 'top'] },
         'dibujo': { name: 'Dibujo', extra: -1000, availableIn: ['A4'] },
         'hojaspropias': { name: 'Utilizar Mis Fichas', extra: -2500, availableIn: ['Ficha'] }
     },
@@ -273,14 +273,8 @@ const CONFIG = {
     },
 
     discPositions: {
-        'left': {
-            name: 'Lado Izquierdo',
-            extra: { 'A4': 0, 'A5': 0, 'A6': 1500, 'Ficha': 0 }
-        },
-        'top': {
-            name: 'Lado Superior (Libreta)',
-            extra: { 'A4': -500, 'A5': -500, 'A6': 0, 'Ficha': 1500 }
-        }
+        'left': { name: 'Lado Izquierdo', extra: 1500 },
+        'top': { name: 'Lado Superior (Libreta)', extra: 0 } // <-- Puedes cambiar el costo extra aquí
     },
 
     discColors: [
@@ -421,7 +415,7 @@ function renderTypeOptions() {
     const container = document.getElementById('type-options');
     container.innerHTML = '';
     for (const [key, data] of Object.entries(CONFIG.types)) {
-        if (data.availableIn.includes(state.size)) {
+        if (data.availableIn.includes(state.size, state.discPosition)) {
             const btn = document.createElement('button');
             btn.className = getPillClasses(state.type === key);
             btn.innerHTML = `${data.name} ${data.extra > 0 ? `<span class="opacity-70 text-xs">(+$${data.extra})</span>` : ''}`;
@@ -446,14 +440,12 @@ function renderSheetOptions() {
 function updateStaticButtons() {
     // Posición
     const btnLeft = document.getElementById('btn-pos-left');
-    const extraLeft = CONFIG.discPositions['left'].extra[state.size] || 0;
     btnLeft.className = `${getBtnClasses(state.discPosition === 'left')} flex-1 py-3 px-4 flex flex-col items-center justify-center`;
-    btnLeft.innerHTML = `<span>Lado Izquierdo</span>${extraLeft > 0 ? `<span class="text-xs opacity-80 mt-1 font-normal">(+$${extraLeft})</span>` : ''}`;
+    btnLeft.innerHTML = `<span>Lado Izquierdo</span>${CONFIG.discPositions['left'].extra > 0 ? `<span class="text-xs opacity-80 mt-1 font-normal">(+$${CONFIG.discPositions['left'].extra})</span>` : ''}`;
 
     const btnTop = document.getElementById('btn-pos-top');
-    const extraTop = CONFIG.discPositions['top'].extra[state.size] || 0;
     btnTop.className = `${getBtnClasses(state.discPosition === 'top')} flex-1 py-3 px-4 flex flex-col items-center justify-center`;
-    btnTop.innerHTML = `<span>Lado Superior</span>${extraTop > 0 ? `<span class="text-xs opacity-80 mt-1 font-normal">(+$${extraTop})</span>` : ''}`;
+    btnTop.innerHTML = `<span>Lado Superior</span>${CONFIG.discPositions['top'].extra > 0 ? `<span class="text-xs opacity-80 mt-1 font-normal">(+$${CONFIG.discPositions['top'].extra})</span>` : ''}`;
 
     // Tamaño
     document.getElementById('btn-disc-normal').className = `${getBtnClasses(state.discSize === 'normal')} flex-1 py-3 px-4 flex flex-col items-center justify-center`;
@@ -769,12 +761,12 @@ function updatePreview() {
  * 7. PRECIO Y WHATSAPP
  */
 function updatePrice() {
-    let total = CONFIG.sizes[state.size].basePrice + CONFIG.types[state.type].extra + CONFIG.discSizes[state.discSize].extra + CONFIG.discPositions[state.discPosition].extra[state.size];
+    let total = CONFIG.sizes[state.size].basePrice + CONFIG.types[state.type].extra + CONFIG.discSizes[state.discSize].extra + CONFIG.discPositions[state.discPosition].extra;
     document.getElementById('total-price').innerText = `$${total.toLocaleString('es-AR')}`;
 }
 
 function sendWhatsApp() {
-    let total = CONFIG.sizes[state.size].basePrice + CONFIG.types[state.type].extra + CONFIG.discSizes[state.discSize].extra + CONFIG.discPositions[state.discPosition].extra[state.size];
+    let total = CONFIG.sizes[state.size].basePrice + CONFIG.types[state.type].extra + CONFIG.discSizes[state.discSize].extra + CONFIG.discPositions[state.discPosition].extra;
     const sizeName = CONFIG.sizes[state.size].name;
     const typeName = CONFIG.types[state.type].name;
     const sheetName = CONFIG.sheetTypes[state.sheetType].name;
