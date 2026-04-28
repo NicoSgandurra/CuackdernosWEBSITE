@@ -424,7 +424,7 @@ function renderTypeOptions() {
         if (data.availableIn.includes(state.size)) {
             const btn = document.createElement('button');
             btn.className = getPillClasses(state.type === key);
-            btn.innerHTML = `${data.name} ${data.extra > 0 ? `<span class="opacity-70 text-xs">(+$${data.extra})</span>` : ''}`;
+            btn.innerHTML = `${data.name}`;
             btn.onclick = () => setType(key);
             container.appendChild(btn);
         }
@@ -448,12 +448,12 @@ function updateStaticButtons() {
     const btnLeft = document.getElementById('btn-pos-left');
     const extraLeft = CONFIG.discPositions['left'].extra[state.size] || 0;
     btnLeft.className = `${getBtnClasses(state.discPosition === 'left')} flex-1 py-3 px-4 flex flex-col items-center justify-center`;
-    btnLeft.innerHTML = `<span>Lado Izquierdo</span>${extraLeft > 0 ? `<span class="text-xs opacity-80 mt-1 font-normal">(+$${extraLeft})</span>` : ''}`;
+    btnLeft.innerHTML = `<span>Lado Izquierdo</span>`;
 
     const btnTop = document.getElementById('btn-pos-top');
     const extraTop = CONFIG.discPositions['top'].extra[state.size] || 0;
     btnTop.className = `${getBtnClasses(state.discPosition === 'top')} flex-1 py-3 px-4 flex flex-col items-center justify-center`;
-    btnTop.innerHTML = `<span>Lado Superior</span>${extraTop > 0 ? `<span class="text-xs opacity-80 mt-1 font-normal">(+$${extraTop})</span>` : ''}`;
+    btnTop.innerHTML = `<span>Lado Superior</span>`;
 
     // Tamaño
     document.getElementById('btn-disc-normal').className = `${getBtnClasses(state.discSize === 'normal')} flex-1 py-3 px-4 flex flex-col items-center justify-center`;
