@@ -272,6 +272,11 @@ const CONFIG = {
         'grande': { name: 'Grande (32mm)', extra: 1000 }
     },
 
+    discPositions: {
+        'left': { name: 'Lado Izquierdo', extra: 1500 },
+        'top': { name: 'Lado Superior (Libreta)', extra: 0 } // <-- Puedes cambiar el costo extra aquí
+    },
+
     discColors: [
         { id: 'blanco', hex: '#FFFFFF', name: 'Blanco' },
         { id: 'arena', hex: '#E2CAAA', name: 'Arena' },
@@ -434,8 +439,13 @@ function renderSheetOptions() {
 
 function updateStaticButtons() {
     // Posición
-    document.getElementById('btn-pos-left').className = `${getBtnClasses(state.discPosition === 'left')} flex-1 py-3 px-4`;
-    document.getElementById('btn-pos-top').className = `${getBtnClasses(state.discPosition === 'top')} flex-1 py-3 px-4`;
+    const btnLeft = document.getElementById('btn-pos-left');
+    btnLeft.className = `${getBtnClasses(state.discPosition === 'left')} flex-1 py-3 px-4 flex flex-col items-center justify-center`;
+    btnLeft.innerHTML = `<span>Lado Izquierdo</span>${CONFIG.discPositions['left'].extra > 0 ? `<span class="text-xs opacity-80 mt-1 font-normal">(+$${CONFIG.discPositions['left'].extra})</span>` : ''}`;
+
+    const btnTop = document.getElementById('btn-pos-top');
+    btnTop.className = `${getBtnClasses(state.discPosition === 'top')} flex-1 py-3 px-4 flex flex-col items-center justify-center`;
+    btnTop.innerHTML = `<span>Lado Superior</span>${CONFIG.discPositions['top'].extra > 0 ? `<span class="text-xs opacity-80 mt-1 font-normal">(+$${CONFIG.discPositions['top'].extra})</span>` : ''}`;
 
     // Tamaño
     document.getElementById('btn-disc-normal').className = `${getBtnClasses(state.discSize === 'normal')} flex-1 py-3 px-4 flex flex-col items-center justify-center`;
@@ -565,6 +575,7 @@ function setDiscPosition(pos) {
     syncDiscCount();
     selectAllDiscs();
     updatePreview();
+    updatePrice();
 }
 
 function setDiscSize(newSize) {
@@ -750,12 +761,12 @@ function updatePreview() {
  * 7. PRECIO Y WHATSAPP
  */
 function updatePrice() {
-    let total = CONFIG.sizes[state.size].basePrice + CONFIG.types[state.type].extra + CONFIG.discSizes[state.discSize].extra;
+    let total = CONFIG.sizes[state.size].basePrice + CONFIG.types[state.type].extra + CONFIG.discSizes[state.discSize].extra + CONFIG.discPositions[state.discPosition].extra;
     document.getElementById('total-price').innerText = `$${total.toLocaleString('es-AR')}`;
 }
 
 function sendWhatsApp() {
-    let total = CONFIG.sizes[state.size].basePrice + CONFIG.types[state.type].extra + CONFIG.discSizes[state.discSize].extra;
+    let total = CONFIG.sizes[state.size].basePrice + CONFIG.types[state.type].extra + CONFIG.discSizes[state.discSize].extra + CONFIG.discPositions[state.discPosition].extra;
     const sizeName = CONFIG.sizes[state.size].name;
     const typeName = CONFIG.types[state.type].name;
     const sheetName = CONFIG.sheetTypes[state.sheetType].name;
